@@ -44,7 +44,7 @@ exports.up = pgm => {
       notNull: true,
     },
     password: {
-      type: 'varchar(40)',
+      type: 'varchar',
       notNull: true,
       default: 'password'
     },

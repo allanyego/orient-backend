@@ -7,8 +7,7 @@ addons:
 before_script:
   - createdb travis_ci_test -U postgres
 env:
-  - PGDATABASE=travis_ci_test PGUSER=postgres 
-  - DATABASE_URL=postgres://postgres@localhost:5432/travis_ci_test
+  - PGDATABASE=travis_ci_test PGUSER=postgres
 install:
   - npm install --build-from-source
 script:

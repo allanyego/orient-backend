@@ -1,6 +1,7 @@
 const db = require('../db');
 const lowerCase = require('./helpers/lowerCase');
-const sign = require('./helpers/sign')
+const sign = require('./helpers/sign');
+const bcrypt = require('bcrypt');
 
 async function findOne({
   email,
@@ -84,16 +85,19 @@ async function isAdminPassword({
   const values = [adminId];
 
   const { rows: [row] } = await db.query(q, values);
-  if (row.password !== password) {
-    return false;
+  if (row.password === 'password' && password === 'password') {
+    return true;
   }
-  return true;
+
+  const valid = await bcrypt.compare(row.password, password);
+  return Boolean(valid);
 }
 
 async function editPassword({
   adminId,
   newPassword
 }) {
+  newPassword = await bcrypt.hash(newPassword, 1);
   const q = 'UPDATE admins SET password=$1 WHERE id=$2 returning id';
   const values = [newPassword, adminId];
 
@@ -112,14 +116,16 @@ async function authenticate({
   const values = [email];
 
   const { rows: [row] } = await db.query(q, lowerCase(values));
-  if (row.password == 'password') {
+  if (row.password === 'password' && password === 'password') {
     return {
       id: row.id,
       accState: 'NEEDS_RESET'
     }
   }
 
-  if (row.password == password) {
+  const valid = await bcrypt.compare(password, row.password);
+
+  if (valid) {
     const user = await findById(row.id);
     return {
       token: sign(user),
