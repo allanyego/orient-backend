@@ -1,19 +1,20 @@
 language: node_js
 node_js:
-  - node
+- node
 dist: trusty
 addons:
   postgresql: 9.6
 before_script:
-  - createdb travis_ci_test -U postgres
+- createdb travis_ci_test -U postgres
 env:
-  - PGDATABASE=travis_ci_test PGUSER=postgres
+- PGDATABASE=travis_ci_test PGUSER=postgres
 install:
-  - npm install --build-from-source
+- npm install --build-from-source
 script:
-  - npm run test
-# deploy:
-#   provider: heroku
-#   api_key: $HEROKU_KEY
-#   app:
-#     develop: orient-ke-dev
+- npm run test
+deploy:
+  provider: heroku
+  app:
+    master: orient-backend-ke
+  api_key:
+    secure: m9sUuc/VOKE9IWYWH53ptitUk/Nxp4MaQMSO66cgAcmP/NMRiYXjP7Qng8cxb4Ju2LGZ/EOvp3j88z1j0lXdMqNJArpll7IyvcQodQ0nt6rA8VEDu+yddRtavc95qbV76EquaUI5Mkam5k6amG4qlzpc+WS3bg9FKkKtuEvbPw7N92BdBBDeNdt2QJ+zKv1sroXRhJY3e+N7GwTs+B+ap9w+2dl7aymtt+5P9eL867DUOwVzHh/TsuWeYAh/zrKQ61I0K0SJBvYcVYW8m/qEj+VCizdmBPjlr185vs8Y7A536e+d5JmkzK6as4ush5cD9r006+gW9VrdS4+ef4Rhf1pi4mKnZhrQXEgEgcIWqE02j7AoSaUGhHB7jO0o6wFtUntZJZ4ZJrfZnoYZf9ilQ70pmKNIi/4cUL8Bef2PF3qVIZktMBWxFvFUv5OzL2m0mFhnrEhDMdgHNbWteh1JiDtuVmLudPdgUVdHTMT1Kav5oEC9LI5n314ZPOKGUJK32+Hs7AsgZWdROFFoxbpnT44rmASk78B1ZYcSIwu7t6C+64Mep3xL8yfEtWh+P5uF4x5Qqc+B2vGTt8nBWl3sAOh2Fj8hDRkZxJzajM5eaZtTjz8gvH+iorq1SzVT5oHcB1soslnq0l0O69kK1j1wsj0zJ0MyEzkeAjcaZXqwpmM=
