@@ -1,13 +1,15 @@
-require('dotenv').config();
-const pg = require('pg');
-require('pg-camelcase').inject(pg);
+require("dotenv").config();
+const pg = require("pg");
+require("pg-camelcase").inject(pg);
 
 let pool;
 const { NODE_ENV, DATABASE_URL } = process.env;
-if (NODE_ENV === 'production' && DATABASE_URL) {
+if (NODE_ENV === "production" && DATABASE_URL) {
   pool = new pg.Pool({
     connectionString: DATABASE_URL,
-    ssl: true,
+    ssl: {
+      rejectUnauthorized: false,
+    },
   });
 } else {
   pool = new pg.Pool();
@@ -15,5 +17,5 @@ if (NODE_ENV === 'production' && DATABASE_URL) {
 
 module.exports = {
   query: (text, params) => pool.query(text, params),
-  checkoutClient: () => pool.connect()
-}
+  checkoutClient: () => pool.connect(),
+};
