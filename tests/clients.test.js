@@ -3,6 +3,7 @@ const request = require('supertest');
 const app = require('../app');
 const controller = require('../controllers/insurers');
 const adminCtrl = require('../controllers/admins');
+const db = require('../db');
 
 const CLIENTS_URL = '/api/v1/clients';
 const POLICIES_URL = '/api/v1/policies';
@@ -30,7 +31,7 @@ beforeAll(async () => {
     password: 'paulkale8'
   });
 
-  // Create a test client
+  // Create a test insurer
   testInsurer = await controller.create({
     name: 'test inc',
     addressNumber: '48',
@@ -60,7 +61,7 @@ beforeAll(async () => {
       },
       policyClass: 'vehicle',
       sumInsured: 850000,
-      premiumRate: 0.5,
+      premiumRate: 5,
       pvt: 4000,
       excessProtection: true,
       antiTheftCoverage: false,
@@ -142,7 +143,7 @@ describe('Policy operations /policies', () => {
       },
       policyClass: 'fire',
       sumInsured: 850000,
-      premiumRate: 0.5,
+      premiumRate: 4.5,
       pvt: 4000,
     };
 
@@ -205,6 +206,24 @@ describe('Policy operations /policies', () => {
 
       expect(resp.statusCode).toBe(200);
       expect(resp.body.data[0]).toBeDefined();
+      done();
+    } catch (error) {
+      done(error);
+    }
+  });
+
+  test('PUT /:policyId/renew should respond with success status', async (done) => {
+    try {
+      const yesterday = new Date(Date.now() - 86400);
+      await db.query("UPDATE policies SET policy_period_end=$1", [yesterday]);
+
+      const resp = await request(app)
+        .put(`${POLICIES_URL}/${testClient.policy.id}/renew`)
+        .send(null)
+        .set('Authorization', `Bearer ${testAdmin.token}`);
+
+      expect(resp.statusCode).toBe(200);
+      expect(resp.body.data.type).toBe("renewal");
       done();
     } catch (error) {
       done(error);

@@ -73,6 +73,19 @@ router.put('/:policyId', auth, async (req, res, next) => {
 
 });
 
+// PUT: Renew policy
+router.put('/:policyId/renew', auth, async (req, res, next) => {
+  try {
+    const renewedPolicy = await controller.renew({
+      id: req.params.policyId,
+    });
+    return res.json(createResponse({ data: renewedPolicy }));
+  } catch (error) {
+    next(error);
+  }
+
+});
+
 // POST a new policy
 router.post('/', auth, async (req, res, next) => {
   try {
@@ -117,7 +130,6 @@ router.post('/', auth, async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-
 });
 
 module.exports = router;

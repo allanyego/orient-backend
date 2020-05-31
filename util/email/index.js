@@ -1,0 +1,17 @@
+require("dotenv").config();
+const nodemailer = require("nodemailer");
+const template = require('./template');
+
+// create reusable transporter object using the default SMTP transport
+// const testUser = nodemailer.createTestAccount();
+
+let transporter = nodemailer.createTransport({
+  host: process.env.EMAIL_HOST,
+  port: 587,
+  secure: false, // true for 465, false for other ports
+  tls: true,
+  auth: {
+    user: process.env.EMAIL_USER, // generated ethereal user
+    pass: process.env.EMAIL_PASS, // generated ethereal password
+  },
+});

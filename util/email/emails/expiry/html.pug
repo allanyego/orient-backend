@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    link(rel="stylesheet", href="stylesheets/main.css", data-inline)
+  body
+    //- img(src="/images/orient-logo.png" alt="orient-logo" class="main__img")
+    h1 Kenya Orient Insurance Ltd
+    div(class="card fluid")
+      div(class="section")
+        h2
+          small Hi&nbsp;
+          strong(class="text-title") #{name},
+        p This is to remind you that your policy premium has expired.
+      div(class="section dark text-upper")
+        span(class="policy-no") #{policyNumber}&nbsp;
+        mark(class="secondary") expired
+      div(class="section")
+        p
+          | In effect as of 
+          mark #{expiryDate}
+          | .
+
+        p Please contact or visit one of our offices for renewal instructions.
+        
+        p Thank you.

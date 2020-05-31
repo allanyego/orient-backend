@@ -1,0 +1,50 @@
+:root {
+  --grey-tone: #d7d7d7;
+}
+
+.text-upper {
+  text-transform: uppercase;
+}
+
+.text-title {
+  text-transform: capitalize;
+}
+
+.policy-no {
+  font-weight: 900;
+}
+
+h2 small {
+  color: #716f6f;
+}
+
+mark {
+  background: #1a4aa6;
+  padding: 0.3em 0.5em;
+  border-radius: 0.2em;
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+mark.tertiary {
+  background: #2d7d18;
+}
+
+mark.secondary {
+  background: #ce0f0f;
+}
+
+.card {
+  border: solid 0.1px var(--grey-tone);
+}
+
+.card .section {
+  padding: 0.5em 1em;
+}
+
+.card .section.dark {
+  text-transform: uppercase;
+  background: var(--grey-tone);
+  padding: 1.2em 1em;
+}

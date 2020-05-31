@@ -17,6 +17,10 @@ async function create({
   vehicle,
   policyClass
 }) {
+  const start = new Date(policyPeriod.start);
+  const end = new Date(start);
+  end.setFullYear(end.getFullYear() + 1);
+
   try {
     let q, values;
     if (policyClass === 'vehicle') {
@@ -25,14 +29,14 @@ async function create({
        sum_insured, premium_rate, pvt, excess_protection, anti_theft_coverage,
        passengers_pll_coverage, rookie, insurer, client, policy_class) VALUES
        ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) RETURNING id`;
-      values = [policyNumber, policyPeriod.start, policyPeriod.end, sumInsured,
+      values = [policyNumber, start, end, sumInsured,
         premiumRate, pvt, excessProtection, antiTheftCoverage, passengersPllCoverage,
         rookie, insurer, client, policyClass];
     } else {
       q = `INSERT INTO policies(policy_number, policy_period_start,
         policy_period_end, sum_insured, premium_rate, pvt, insurer, client,
         policy_class) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id`;
-      values = [policyNumber, policyPeriod.start, policyPeriod.end, sumInsured,
+      values = [policyNumber, start, end, sumInsured,
         premiumRate, pvt, insurer, client, policyClass];
     }
 
@@ -119,7 +123,7 @@ async function find({ client, insurer, search, limit, type }) {
 
 async function edit({ id, approved = true }) {
   try {
-    const q = `UPDATE policies SET approved=$1, date_approved=DEFAULT
+    const q = `UPDATE policies SET approved=$1, date_approved=CURRENT_TIMESTAMP
       WHERE (id=$2) RETURNING id`;
     const values = [approved, id];
     const { rows: [row] } = await db.query(q, values);
@@ -130,10 +134,25 @@ async function edit({ id, approved = true }) {
   }
 }
 
+async function renew({id}) {
+  const q = `UPDATE policies SET approved=false, policy_period_start=$1,
+    policy_period_end=$2, date_approved=NULL, type=$3 WHERE id=$4
+    RETURNING id`;
+
+  const start = new Date();
+  const end = new Date();
+  end.setFullYear(start.getFullYear() + 1);
+  const values = [start, end, "renewal", id];
+  
+  const {rows: [row]} = await db.query(q, values);
+  return await findById(row.id);
+}
+
 module.exports = {
   edit,
   find,
   findOne,
   findById,
   create,
+  renew,
 }
