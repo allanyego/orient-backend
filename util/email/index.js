@@ -16,7 +16,7 @@ let transporter = nodemailer.createTransport({
 });
 
 let msg = {
-  from: process.env.EMAIL_USER,
+  from: "Orient Insurance Co. Ltd.",
 }
 
 async function sendApprovalEmail({message, locals}) {
