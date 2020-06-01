@@ -126,11 +126,11 @@ exports.up = pgm => {
       notNull: true
     },
     policy_period_start: {
-      type: 'timestamp',
+      type: 'timestamptz',
       notNull: true
     },
     policy_period_end: {
-      type: 'timestamp',
+      type: 'timestamptz',
       notNull: true
     },
     sum_insured: {

@@ -2,6 +2,10 @@ require("dotenv").config();
 const pg = require("pg");
 require("pg-camelcase").inject(pg);
 
+// const types = pg.types;
+
+// types.setTypeParser(1114, stringVal => stringVal);
+
 let pool;
 const { NODE_ENV, DATABASE_URL } = process.env;
 if (NODE_ENV === "production" && DATABASE_URL) {
@@ -11,6 +15,7 @@ if (NODE_ENV === "production" && DATABASE_URL) {
       rejectUnauthorized: false,
     },
   });
+
 } else {
   pool = new pg.Pool();
 }

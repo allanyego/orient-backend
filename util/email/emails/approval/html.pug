@@ -11,7 +11,7 @@ html(lang="en")
       div(class="section")
         h2
           small Hi&nbsp;
-          strong(class="text-title") #{name},
+          strong(class="text-title") #{firstName},
         p Your policy premium has been approved.
       div(class="section dark text-upper")
         span(class="policy-no") #{policyNumber}&nbsp;
@@ -20,9 +20,9 @@ html(lang="en")
       div(class="section")
         p
           | It is valid from 
-          mark #{from}
+          mark #{policyPeriodStart}
           | &nbsp;to 
-          mark #{to}
+          mark #{policyPeriodEnd}
           | .
         
         p Thank you.

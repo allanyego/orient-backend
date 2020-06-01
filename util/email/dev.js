@@ -1,6 +1,6 @@
 // require("dotenv").config();
 // const nodemailer = require("nodemailer");
-const template = require('./template');
+const template = require("./template");
 
 // create reusable transporter object using the default SMTP transport
 // const testUser = nodemailer.createTestAccount();
@@ -27,17 +27,16 @@ const template = require('./template');
 
 async function runTest() {
   const message = {
-    from: '"Dev Yego 👻" <devyego@gmail.com>', // sender address
-    to: "allanyego05@gmail.com", // list of receivers
-    subject: "Hello ✔", // Subject line
-  },
-  locals = {
-    name: "yego",
-    policyNumber: "mmb/334/2012",
-    from: "13/03/2012",
-    to: "13/03/2012",
-    expiryDate: "13/03/2012",
-  };
+      from: '"Dev Yego 👻" <devyego@gmail.com>', // sender address
+      to: "allanyego05@gmail.com", // list of receivers
+      subject: "Hello ✔", // Subject line
+    },
+    locals = {
+      firstName: "yego",
+      policyNumber: "mmm/56356/9098",
+      policyPeriodStart: "2020-05-29T13:09:13.078Z",
+      policyPeriodEnd: "2021-05-29T13:09:13.078Z",
+    };
 
   try {
     const ctr = await template({
@@ -46,8 +45,8 @@ async function runTest() {
       locals,
     });
 
-    // ctr.send().then(console.log);
-    ctr.render().then(console.log);
+    ctr.send().then(console.log);
+    // ctr.render().then(console.log);
   } catch (error) {
     console.error(error);
   }

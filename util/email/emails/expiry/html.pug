@@ -11,7 +11,7 @@ html(lang="en")
       div(class="section")
         h2
           small Hi&nbsp;
-          strong(class="text-title") #{name},
+          strong(class="text-title") #{firstName},
         p This is to remind you that your policy premium has expired.
       div(class="section dark text-upper")
         span(class="policy-no") #{policyNumber}&nbsp;
@@ -19,7 +19,7 @@ html(lang="en")
       div(class="section")
         p
           | In effect as of 
-          mark #{expiryDate}
+          mark #{policyPeriodEnd}
           | .
 
         p Please contact or visit one of our offices for renewal instructions.

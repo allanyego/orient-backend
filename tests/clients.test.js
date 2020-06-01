@@ -139,12 +139,40 @@ describe('Policy operations /policies', () => {
       policyNumber: 'mmm/56356/1001',
       policyPeriod: {
         start: new Date(),
-        end: new Date(),
+        end: new Date(new Date().getTime() + 20000000000),
       },
       policyClass: 'fire',
       sumInsured: 850000,
       premiumRate: 4.5,
       pvt: 4000,
+    };
+
+    try {
+      const resp = await request(app)
+        .post(POLICIES_URL)
+        .send(policy2)
+        .set('Authorization', `Bearer ${testAdmin.token}`);
+
+      expect(resp.statusCode).toBe(201);
+      done();
+    } catch (error) {
+      done(error);
+    }
+  });
+
+  test('POST / should respond with created policy', async (done) => {
+    const policy2 = {
+      client: testClient.id,
+      insurer: testInsurer.id,
+      policyNumber: 'mnn/56356/2019',
+      policyPeriod: {
+        start: new Date(),
+        end: new Date(new Date().getTime() + 20000000000),
+      },
+      policyClass: 'fire',
+      sumInsured: 5000000,
+      premiumRate: 4.5,
+      pvt: 14000,
     };
 
     try {

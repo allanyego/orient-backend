@@ -1,4 +1,3 @@
-require("dotenv").config();
 const nodemailer = require("nodemailer");
 const template = require('./template');
 
@@ -15,3 +14,46 @@ let transporter = nodemailer.createTransport({
     pass: process.env.EMAIL_PASS, // generated ethereal password
   },
 });
+
+let msg = {
+  from: process.env.EMAIL_USER,
+}
+
+async function sendApprovalEmail({message, locals}) {
+  msg = {
+    ...msg,
+    ...message,
+  };
+
+  const ctr = await template({
+    templateUrl: "approval",
+    message,
+    locals,
+    transporter,
+    test: false,
+  });
+
+  return await ctr.send();
+}
+
+async function sendExpiryReminder({message, locals}) {
+  msg = {
+    ...msg,
+    ...message,
+  };
+
+  const ctr = await template({
+    templateUrl: "expiry",
+    message,
+    locals,
+    transporter,
+    test: false,
+  });
+
+  return await ctr.send();
+}
+
+module.exports = {
+  sendApprovalEmail,
+  sendExpiryReminder,
+};
